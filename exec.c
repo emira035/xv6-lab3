@@ -63,6 +63,8 @@ exec(char *path, char **argv)
   if(allocuvm(pgdir, KERNBASE - PGSIZE, KERNBASE) == 0)
     goto bad;
   sp = KERNBASE - 32;
+  curproc->sb = KERNBASE - PGSIZE;
+
   // Allocate two pages at the next page boundary.
   // Make the first inaccessible.  Use the second as the user stack.
   //sz = PGROUNDUP(sz);
