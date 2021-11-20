@@ -77,6 +77,15 @@ trap(struct trapframe *tf)
             cpuid(), tf->cs, tf->eip);
     lapiceoi();
     break;
+  case T_PGFLT:  //i added
+
+    uint faddr = rcr2(); //offending address
+    
+    //check if its from page right under the current bottom of stack
+    //if it is, grow stack by using allocuvm
+
+  break;
+
 
   //PAGEBREAK: 13
   default:

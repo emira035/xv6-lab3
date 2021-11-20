@@ -18,11 +18,21 @@ int
 fetchint(uint addr, int *ip)
 {
   struct proc *curproc = myproc();
-
+  
+  /*
   if(addr >= curproc->sz || addr+4 > curproc->sz)
     return -1;
   *ip = *(int*)(addr);
   return 0;
+  */
+
+  if (addr >= curproc->stacktop || addr+4> curproc->stacktop)
+    return -1;
+  *ip = *(int*)(addr);
+  return 0;
+
+
+
 }
 
 // Fetch the nul-terminated string at addr from the current process.
@@ -34,6 +44,7 @@ fetchstr(uint addr, char **pp)
   char *s, *ep;
   struct proc *curproc = myproc();
 
+  /*
   if(addr >= curproc->sz)
     return -1;
   *pp = (char*)addr;
@@ -43,6 +54,19 @@ fetchstr(uint addr, char **pp)
       return s - *pp;
   }
   return -1;
+
+  */
+
+  if(addr >= curproc->stacktop)
+    return -1;
+    *pp = (char*)addr;
+    ep = (char*)curproc->stacktop;
+    for( s= *pp; s<ep; s++){
+      if(*s ==0)
+        return s - *pp;
+    }
+    return -1;
+
 }
 
 // Fetch the nth 32-bit system call argument.
@@ -61,12 +85,23 @@ argptr(int n, char **pp, int size)
   int i;
   struct proc *curproc = myproc();
  
+ /*
   if(argint(n, &i) < 0)
     return -1;
   if(size < 0 || (uint)i >= curproc->sz || (uint)i+size > curproc->sz)
     return -1;
   *pp = (char*)i;
   return 0;
+
+  */
+
+  if (argint(n,&i) < 0)
+    return -1;
+  if (size <0 || (uint)i >= curproc->stacktop || (uint)i+size > curproc->stacktop)
+    return -1;
+    **pp = (char*)i;
+  return 0;
+
 }
 
 // Fetch the nth word-sized system call argument as a string pointer.
