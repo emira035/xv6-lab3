@@ -72,10 +72,10 @@ exec(char *path, char **argv)
     //KERNBASE is the base address for kernel
     //KERNBASE-PGSIZE is start of stack
 
-   if((sz = allocuvm(pgdir,KERNBASE-PGSIZE,(KERNBASE-PGSIZE*2))==0)
+   if((sz = allocuvm(pgdir,KERNBASE-PGSIZE,(KERNBASE-PGSIZE*2))==0))
     goto bad;
     
-  clearpteu(pgdir,(char*)(KERNBASE-PGSIZE*2);
+  clearpteu(pgdir,(char*)(KERNBASE-PGSIZE*2));
    sp = KERNBASE-PGSIZE; //sz
    curproc->stacktop = sp; //keep track of top of stack
 

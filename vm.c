@@ -326,7 +326,7 @@ copyuvm(pde_t *pgdir, uint sz)
    int sz1 = PGROUNDUP(sz); //not sure yet
 
    //copies over the stack starting from  top of 'sz' and up to kernbase ->sz(heap top?)->stackbase->stacktop->kernbase
-  for (int i=sz1; i <KERNBASE; i+=PGSIZE)
+  for(i=sz1; i <KERNBASE; i+=PGSIZE)
   {
     if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
       panic("copyuvm: pte should exist");

@@ -99,7 +99,7 @@ argptr(int n, char **pp, int size)
     return -1;
   if (size <0 || (uint)i >= curproc->stacktop || (uint)i+size > curproc->stacktop)
     return -1;
-    **pp = (char*)i;
+    *pp = (char*)i;
   return 0;
 
 }

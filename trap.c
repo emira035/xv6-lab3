@@ -79,8 +79,11 @@ trap(struct trapframe *tf)
     break;
   case T_PGFLT:  //i added
 
-    uint faddr = rcr2(); //offending address
-    
+    //uint faddr = rcr2(); //offending address
+    //myproc()->stacktop
+
+
+
     //check if its from page right under the current bottom of stack
     //if it is, grow stack by using allocuvm
 
