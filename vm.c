@@ -323,7 +323,7 @@ copyuvm(pde_t *pgdir, uint sz)
   if((d = setupkvm()) == 0)
     return 0;
 
-   int sz1 = PGROUNDUP(sz); //not sure yet
+   int sz1 = myproc()->stacktop; //not sure yet
 
    //copies over the stack starting from  top of 'sz' and up to kernbase ->sz(heap top?)->stackbase->stacktop->kernbase
   for(i=sz1; i <KERNBASE; i+=PGSIZE)

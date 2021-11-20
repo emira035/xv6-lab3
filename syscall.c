@@ -26,7 +26,7 @@ fetchint(uint addr, int *ip)
   return 0;
   */
 
-  if (addr >= curproc->stacktop || addr+4> curproc->stacktop)
+  if (addr < curproc->stacktop)
     return -1;
   *ip = *(int*)(addr);
   return 0;
@@ -57,7 +57,7 @@ fetchstr(uint addr, char **pp)
 
   */
 
-  if(addr >= curproc->stacktop)
+  if(addr < curproc->stacktop)
     return -1;
     *pp = (char*)addr;
     ep = (char*)curproc->stacktop;
@@ -97,7 +97,7 @@ argptr(int n, char **pp, int size)
 
   if (argint(n,&i) < 0)
     return -1;
-  if (size <0 || (uint)i >= curproc->stacktop || (uint)i+size > curproc->stacktop)
+  if (size <0 || (uint)i < curproc->stacktop)
     return -1;
     *pp = (char*)i;
   return 0;
