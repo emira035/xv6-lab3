@@ -72,7 +72,7 @@ exec(char *path, char **argv)
     //KERNBASE is the base address for kernel
     //KERNBASE-PGSIZE is start of stack
 
-   if((sz = allocuvm(pgdir,KERNBASE-PGSIZE,KERNBASE - 1))==0)
+   if (allocuvm(pgdir,KERNBASE-PGSIZE,KERNBASE - 1) == 0)
     goto bad;
     
   //clearpteu(pgdir,(char*)(KERNBASE-PGSIZE*2));

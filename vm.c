@@ -323,23 +323,8 @@ copyuvm(pde_t *pgdir, uint sz)
   if((d = setupkvm()) == 0)
     return 0;
 
-   int sz1 = myproc()->stacktop; //not sure yet
+   //int sz1 = myproc()->stacktop; //not sure yet
 
-   //copies over the stack starting from  top of 'sz' and up to kernbase ->sz(heap top?)->stackbase->stacktop->kernbase
-  for(i=sz1; i <KERNBASE; i+=PGSIZE)
-  {
-    if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
-      panic("copyuvm: pte should exist");
-    if(!(*pte & PTE_P))
-      panic("copyuvm: page not present");
-    pa = PTE_ADDR(*pte);
-    flags = PTE_FLAGS(*pte);
-    if((mem = kalloc()) == 0)
-      goto bad;
-    memmove(mem, (char*)P2V(pa), PGSIZE);
-    if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
-      goto bad;
-  }
 
   for(i = 0; i < sz; i += PGSIZE){
     if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
@@ -355,6 +340,21 @@ copyuvm(pde_t *pgdir, uint sz)
       goto bad;
   }
 
+   //copies over the stack starting from  top of 'sz' and up to kernbase ->sz(heap top?)->stackbase->stacktop->kernbase
+  for(i=myproc()->stacktop; i <KERNBASE; i+=PGSIZE)
+  {
+    if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
+      panic("copyuvm: pte should exist");
+    if(!(*pte & PTE_P))
+      panic("copyuvm: page not present");
+    pa = PTE_ADDR(*pte);
+    flags = PTE_FLAGS(*pte);
+    if((mem = kalloc()) == 0)
+      goto bad;
+    memmove(mem, (char*)P2V(pa), PGSIZE);
+    if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
+      goto bad;
+  }
 
 
 
