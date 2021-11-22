@@ -59,13 +59,13 @@ fetchstr(uint addr, char **pp)
 
   if(addr < curproc->stacktop)
     return -1;
-    *pp = (char*)addr;
-    ep = (char*)curproc->stacktop;
-    for( s= *pp; s<ep; s++){
-      if(*s ==0)
-        return s - *pp;
-    }
-    return -1;
+  *pp = (char*)addr;
+  ep = (char*)((curproc->stacktop == 0) ? curproc->sz : KERNBASE);
+  for( s= *pp; s<ep; s++){
+    if(*s ==0)
+      return s - *pp;
+  }
+  return -1;
 
 }
 
