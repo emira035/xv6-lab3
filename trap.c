@@ -36,6 +36,8 @@ idtinit(void)
 void
 trap(struct trapframe *tf)
 {
+  uint faddr;
+  
   if(tf->trapno == T_SYSCALL){
     if(myproc()->killed)
       exit();
@@ -79,10 +81,12 @@ trap(struct trapframe *tf)
     break;
   case T_PGFLT:  //i added
 
-    //uint faddr = rcr2(); //offending address
-    //myproc()->stacktop
-
-
+    faddr = rcr2(); //offending address
+    if (faddr < myproc()->stacktop && faddr >= myproc()->stacktop - PGSIZE) {
+      allocuvm(myproc()->pgdir, myproc()->stacktop - PGSIZE, myproc()->stacktop - 1);
+      myproc()->stacktop -= PGSIZE;
+      //cprintf("page fault, stack size = %d page\n", (KERNBASE - myproc()->stacktop)/PGSIZE);
+    }
 
     //check if its from page right under the current bottom of stack
     //if it is, grow stack by using allocuvm
