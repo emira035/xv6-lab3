@@ -196,8 +196,8 @@ fork(void)
     np->state = UNUSED;
     return -1;
   }
+
   np->sz = curproc->sz;
-  np->stacktop = curproc->stacktop;
   np->parent = curproc;
   *np->tf = *curproc->tf;
 
