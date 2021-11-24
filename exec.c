@@ -71,8 +71,8 @@ exec(char *path, char **argv)
   if((allocuvm(pgdir,KERNBASE-PGSIZE,KERNBASE-1)) == 0)
     goto bad;
   //clearpteu(pgdir, (char*)(sz-K));
-  curproc->stacktop = KERNBASE-1;
-  sp = KERNBASE-1;
+  curproc->stacktop = KERNBASE-PGSIZE;
+  sp = KERNBASE-32;
   
   // Push argument strings, prepare rest of stack in ustack.
   for(argc = 0; argv[argc]; argc++) {
